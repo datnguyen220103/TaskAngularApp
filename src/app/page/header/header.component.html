@@ -1,0 +1,38 @@
+<header class="bg-danger-subtle">
+    <div class="notification text-center pt-2">
+        <p class=" mb-0 ">Tạo nhắc nhở công việc dễ dàng <a href="/create">Tại đây</a></p>
+        <hr>
+    </div>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-danger-subtle ">
+            <div class="container">
+                <a class="navbar-brand" href="/">TASK MANAGER</a>
+                <button class="navbar-toggler hidden-lg-up" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                    aria-label="Toggle navigation"></button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/create" aria-current="page">Tạo công
+                                việc
+                                <span class="visually-hidden">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="tasklist">Danh sách CV</a>
+                        </li>
+                    </ul>
+                    <form (ngSubmit)="onSearch()" class="d-flex my-2 my-lg-0">
+                        <input name="search" [(ngModel)]="searchText" class="form-control me-sm-2" type="text"
+                            placeholder="Search" />
+                        <button class="btn btn-danger  my-2 my-sm-0" type="submit">
+                            Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+
+    </div>
+
+</header>

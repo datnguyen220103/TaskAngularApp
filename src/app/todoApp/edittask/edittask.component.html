@@ -1,0 +1,61 @@
+<main class="py-5">
+    <form [formGroup]="editF" (submit)="onEdit()">
+        <div class="container">
+            <div class="col-md-10 mx-auto">
+                <h1>EDIT TASK</h1>
+                <div class="mb-3">
+                    <label for="" class="form-label">Name Task</label>
+                    <input type="text" name="" id="" class="form-control" formControlName="name" placeholder=""
+                        aria-describedby="helpId" />
+                    <div *ngIf="editF['controls']['name'].dirty && editF['controls']['name'].errors">
+                        <small class="form-text" *ngIf="editF['controls']['name'].errors['required']">Tên
+                            task không được để trống</small>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Group</label>
+                    <input type="text" name="" id="" class="form-control" formControlName="group" placeholder=""
+                        aria-describedby="helpId" />
+                    <div *ngIf="editF['controls']['group'].dirty && editF['controls']['group'].errors">
+                        <small class="form-text" *ngIf="editF['controls']['group'].errors['required']">Tên
+                            group không được để trống</small>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Status</label>
+                    <select id="taskStatus" class="form-control" required formControlName="status" name="">
+                        <option value="false">Chưa hoàn thành</option>
+                        <option value="true">Hoàn thành</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Priority</label>
+                    <select id="taskStatus" class="form-control" required formControlName="priority" name="">
+                        <option value="1">Rất quan trọng</option>
+                        <option value="2">Quan trọng</option>
+                        <option value="3">Không quan trọng</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Due Date</label>
+                    <input type="date" name="" id="" class="form-control" formControlName="duedate" placeholder=""
+                        aria-describedby="helpId" />
+                    <div *ngIf="editF['controls']['duedate'].dirty && editF['controls']['duedate'].errors">
+                        <small class="form-text" *ngIf="editF['controls']['duedate'].errors['required']">Deadline
+                            không được để trống</small>
+
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Description</label>
+                    <textarea type="date" name="" id="" class="form-control" formControlName="description"
+                        placeholder="" aria-describedby="helpId" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" [disabled]="editF.invalid">Add Task</button>
+            </div>
+        </div>
+
+    </form>
+
+</main>

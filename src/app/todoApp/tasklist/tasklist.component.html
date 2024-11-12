@@ -1,0 +1,68 @@
+<main class="py-5">
+    <div class="task-list">
+        <div class="container">
+            <div class="col-md-10 mx-auto">
+                <h1>TASKS</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Name</th>
+                            <th>Group</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Deadline</th>
+                            <th>Create date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let taskItem of displayedTasks; let index = index;">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ taskItem.name }}</td>
+                            <td>{{ taskItem.group }}</td>
+                            <td>{{ taskItem.status ? 'Đã hoàn thành' : 'Chưa hoàn thành' }}</td>
+                            <td>
+                                {{ taskItem.priority == 1 ? 'Rất quan trọng' :
+                                taskItem.priority == 2 ? 'Quan trọng' :
+                                'Không quan trọng' }}
+                            </td>
+                            <td>{{ taskItem.dueDate | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ taskItem.createdDate | date: 'dd/MM/yyyy' }}</td>
+                            <td>
+                                <div class="buttons">
+                                    <a [routerLink]="['/task/edit', taskItem.id]"><button type="button"
+                                            class="btn btn-primary mx-1">Sửa</button></a>
+                                    <!-- <a (click)="ondeleteTask(taskItem.id)" class="btn btn-success mx-1">Xóa</a> -->
+                                    <button type="button" class="btn btn-danger mx-1"
+                                        (click)="ondeleteTask(taskItem.id)">Xóa</button>
+                                    <a href="#"><button type="button" class="btn btn-info">Xem</button></a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <a class="page-link" (click)="previousPage()" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <li *ngFor="let page of pages" class="page-item" [class.active]="currentPage === page">
+                            <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+                        </li>
+
+                        <li class="page-item" [class.disabled]="currentPage === totalPage">
+                            <a class="page-link" (click)="nextPage()" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>
