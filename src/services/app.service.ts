@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 const api = 'http://localhost:5014/api/TaskItems';
 @Injectable({
@@ -28,5 +29,15 @@ export class AppService {
 
   putTaskId(task: any, id:number): Observable<any>{
     return this.http.put<any>(`${api}/${id}`, task  );
+  }
+}
+export class searchService{
+  private searchTextSubject = new BehaviorSubject<string>('');
+  searchText$ = this.searchTextSubject.asObservable();
+
+  constructor() {}
+
+  setSearchText(searchText: string): void {
+    this.searchTextSubject.next(searchText);
   }
 }

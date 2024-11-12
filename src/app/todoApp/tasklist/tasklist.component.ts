@@ -2,15 +2,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { AppService } from '../../../services/app.service';
+import { AppService,searchService  } from '../../../services/app.service';
 import { RouterOutlet, RouterLink} from '@angular/router';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-tasklist',
   standalone: true,
   imports: [CommonModule, HttpClientModule,RouterOutlet, RouterLink],
-  providers: [AppService],
+  providers: [AppService,searchService],
   templateUrl: './tasklist.component.html',
   styleUrl: './tasklist.component.scss',
 })
@@ -22,17 +23,28 @@ export class TasklistComponent implements OnInit {
   totalPage: number = 1;
   pages: number[] = [];
   searchText: string = '';
-  constructor(private app: AppService) {}
+  searchSubscription: Subscription= new Subscription();
+  constructor(private app: AppService,private appSearch : searchService) {}
 
   ngOnInit(): void {
     this.loadTasks();
+    this.searchSubscription = this.appSearch.searchText$.subscribe(searchText => {
+      this.searchText = searchText;
+      this.filterTasks(); // Lọc lại danh sách khi giá trị tìm kiếm thay đổi
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
   }
 
   loadTasks(): void {
     this.app.tasks().subscribe({
       next: (res: any) => {
         this.tasks = res;
-        this.filterTasks();  // Lọc tasks theo từ khóa tìm kiếm mỗi khi load lại
+        this.filterTasks(); // Lọc tasks khi load lại
       },
       error: (err: any) => {
         console.log(err);
@@ -40,13 +52,12 @@ export class TasklistComponent implements OnInit {
     });
   }
 
-  // filter
   filterTasks(): void {
     let filteredTasks = this.tasks;
 
     if (this.searchText) {
-      filteredTasks = this.tasks.filter(task => 
-        task.name.toLowerCase().includes(this.searchText.toLowerCase())  // Kiểm tra tên task có chứa từ khóa tìm kiếm không
+      filteredTasks = this.tasks.filter(task =>
+        task.name.toLowerCase().includes(this.searchText.toLowerCase())
       );
     }
 
@@ -55,7 +66,6 @@ export class TasklistComponent implements OnInit {
     this.updateDisplayedTasks(filteredTasks);
   }
 
-  //udapte danh sách tasks hiển thị 
   updateDisplayedTasks(filteredTasks: any[]): void {
     const startIndex = (this.currentPage - 1) * this.tasksPerPage;
     this.displayedTasks = filteredTasks.slice(startIndex, startIndex + this.tasksPerPage);
@@ -64,7 +74,7 @@ export class TasklistComponent implements OnInit {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPage) {
       this.currentPage = page;
-      this.filterTasks();  
+      this.filterTasks();
     }
   }
 
@@ -80,31 +90,16 @@ export class TasklistComponent implements OnInit {
     }
   }
 
-  // Hàm xử lý thay đổi từ khóa tìm kiếm
-  onSearch(): void {
-    this.currentPage = 1;  // Đặt lại trang về 1 khi tìm kiếm
-    this.filterTasks();  // Lọc lại danh sách khi người dùng tìm kiếm
-  }
-
-  // ondeleteTask(idTask: number):void {
-  //   this.app.deleteTask(idTask).subscribe({
-  //     next: ()=>{
-  //        this.tasks = this.tasks.filter(task => task.id !== idTask);
-  //        this.filterTasks();
-  //     },
-  //     error: (err: any) => console.log(err),
-  //   })
-  // }
   ondeleteTask(idTask: number): void {
     this.app.deleteTask(idTask).subscribe({
       next: () => {
         this.tasks = this.tasks.filter(task => task.id !== idTask);
-        this.filterTasks();  // Lọc lại danh sách sau khi xóa
+        this.filterTasks();
       },
       error: (err: any) => {
         console.log(err);
       }
     });
-}
+  }
 
 }

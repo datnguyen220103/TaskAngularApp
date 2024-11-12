@@ -36,7 +36,7 @@
                                     <!-- <a (click)="ondeleteTask(taskItem.id)" class="btn btn-success mx-1">Xóa</a> -->
                                     <button type="button" class="btn btn-danger mx-1"
                                         (click)="ondeleteTask(taskItem.id)">Xóa</button>
-                                    <a href="#"><button type="button" class="btn btn-info">Xem</button></a>
+                                    <a [routerLink]="['/task/detail', taskItem.id]"><button type="button" class="btn btn-info">Xem</button></a>
                                 </div>
                             </td>
                         </tr>

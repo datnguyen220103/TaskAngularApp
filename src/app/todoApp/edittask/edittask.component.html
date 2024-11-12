@@ -38,8 +38,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Due Date</label>
-                    <input type="date" name="" id="" class="form-control" formControlName="duedate" placeholder=""
-                        aria-describedby="helpId" />
+                    <!-- <input type="date" name="" id="" class="form-control" formControlName="duedate" placeholder=""
+                        aria-describedby="helpId" /> -->
+                        <input type="date" name="" id="" class="form-control" formControlName="duedate" placeholder="" aria-describedby="helpId" />
                     <div *ngIf="editF['controls']['duedate'].dirty && editF['controls']['duedate'].errors">
                         <small class="form-text" *ngIf="editF['controls']['duedate'].errors['required']">Deadline
                             không được để trống</small>
@@ -52,7 +53,8 @@
                         placeholder="" aria-describedby="helpId" rows="3"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary" [disabled]="editF.invalid">Add Task</button>
+                <button type="submit" class="btn btn-primary me-3" [disabled]="editF.invalid">Sửa</button>
+                <a href="tasklist " class="btn btn-primary" >Quay lại</a>
             </div>
         </div>
 

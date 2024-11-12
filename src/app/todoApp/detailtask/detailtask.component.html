@@ -1,0 +1,36 @@
+<div class="container mt-5" *ngIf="taskDetail">
+    <h1 class="text-center">Task Detail</h1>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Task ID: <span class="text-muted">{{ taskDetail.id }}</span></h5>
+            <p class="card-text"><strong>Name:</strong> {{ taskDetail.name }}</p>
+            <p class="card-text"><strong>Group:</strong> {{ taskDetail.group }}</p>
+            <p class="card-text"><strong>Status:</strong> 
+                <span class="badge" [ngClass]="taskDetail.status ? 'bg-success' : 'bg-danger'">
+                    {{ taskDetail.status ? 'Completed' : 'Pending' }}
+                </span>
+            </p>
+            <p class="card-text"><strong>Priority:</strong> 
+                <span class="badge" [ngClass]="{
+                    'bg-danger': taskDetail.priority === 1,
+                    'bg-warning text-dark': taskDetail.priority === 2,
+                    'bg-secondary': taskDetail.priority === 3
+                }">
+                    {{ taskDetail.priority === 1 ? 'High' : taskDetail.priority === 2 ? 'Medium' : 'Low' }}
+                </span>
+            </p>
+            <p class="card-text"><strong>Due Date:</strong> {{ taskDetail.dueDate | date: 'dd/MM/yyyy' }}</p>
+            <p class="card-text"><strong>Created Date:</strong> {{ taskDetail.createdDate | date: 'dd/MM/yyyy' }}</p>
+            <p class="card-text"><strong>Description:</strong> {{ taskDetail.description || 'No description available' }}</p>
+            <div class="mt-4">
+                <a [routerLink]="['/task/edit', taskDetail.id]">
+                    <button type="button" class="btn btn-primary mx-1">Sửa</button>
+                </a>
+                <button type="button" class="btn btn-danger mx-1" (click)="ondeleteTask(taskDetail.id)">
+                    Xóa
+                </button>
+                <a href="tasklist " class="btn btn-primary mx-1" >Quay lại</a>
+            </div>
+        </div>
+    </div>
+</div>

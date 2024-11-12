@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppService } from '../../../services/app.service';
@@ -25,7 +25,7 @@ export class EdittaskComponent implements OnInit {
     createdate: new FormControl(new Date().toISOString().split('T')[0], Validators.required) 
   })
   taskId: number = 0;
-  constructor(private app: AppService, private route: ActivatedRoute) {
+  constructor(private app: AppService, private route: ActivatedRoute, private router: Router) {
   }
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -36,7 +36,7 @@ export class EdittaskComponent implements OnInit {
   getTaskById(id: any) {
     this.app.getTaskById(id).subscribe(task => {
       if (task.duedate) {
-        task.duedate = task.duedate.split('T')[0]; 
+        task.duedate = new Date(task.duedate).toISOString().split('T')[0];
       }
   
       if (typeof task.status === 'string') {
@@ -54,19 +54,17 @@ export class EdittaskComponent implements OnInit {
       formValue.status = true; 
     }
     formValue.priority = Number(formValue.priority)
-    formValue.duedate = new Date(formValue.duedate).toISOString();
-    formValue.createdate = new Date(formValue.createdate).toISOString();
-
-    console.log(this.taskId)
+    formValue.duedate = new Date(formValue.duedate).toISOString().split('T')[0];
+    formValue.createdate = new Date(formValue.createdate).toISOString().split('T')[0];
+    formValue.id = this.taskId; 
     if(this.editF.valid){
       this.app.putTaskId(formValue, this.taskId).subscribe({
         
         next:()=>{
-          console.log(this.editF.value)
           alert("Sửa công việc thành công")
+          this.router.navigate(['/tasklist']);
         },
         error: (err: any) => {
-        console.log(this.editF.value)
         console.log(err);
       }
       })
